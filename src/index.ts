@@ -2,6 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import rateLimit from 'axios-rate-limit';
 import cap from './data/comuni.json';
 import * as fs from 'fs';
+import _ from 'lodash';
 
 // This is the structure of the Point data we recieve
 interface PointData {
@@ -39,9 +40,7 @@ Object.values(cap).map((r) => {
       console.log('Risultati per : ', r.cap[0]);
       console.log(response.data.data);
 
-      delete response.data.data.logo;
-
-      pointCenter.push(response.data.data);
+      pointCenter.push(_.omit(response.data.data[0], 'logo'));
 
       fs.appendFile('pointCenter.json', JSON.stringify(pointCenter), (err) => {
         // In case of a error throw err.
