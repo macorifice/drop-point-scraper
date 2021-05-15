@@ -18,14 +18,14 @@ const pointCenter: PointData[] = [];
 
 const http = rateLimit(axios.create(), {
   maxRequests: 2,
-  perMilliseconds: 30000,
+  perMilliseconds: 10000,
   maxRPS: 2,
 });
 http.getMaxRPS();
 
 http.setMaxRPS(3);
 http.getMaxRPS();
-http.setRateLimitOptions({ maxRequests: 6, perMilliseconds: 30000 });
+http.setRateLimitOptions({ maxRequests: 10, perMilliseconds: 30000 });
 
 Object.values(cap).map((r) => {
   http
@@ -33,11 +33,14 @@ Object.values(cap).map((r) => {
       query: r.cap[0],
     })
     .then((response: AxiosResponse) => {
+
+      console.log(`Risultati per CAP ${r.cap[0]}`, response.data.data[0] ? response.data.data[0] : '[]');
+
       fs.appendFile(
         'src/result/points.log',
-        `Risultati per CAP ${r.cap[0]} : ${JSON.stringify(
-          response.data.data[0]
-        )}`,
+        `Risultati per CAP ${r.cap[0]} : 
+        ${JSON.stringify(response.data.data[0] ? response.data.data[0] : '[]')}
+        `,
         (err) => {
           if (err) throw err;
         }
@@ -46,7 +49,7 @@ Object.values(cap).map((r) => {
       if (_.isEmpty(response.data.data)) {
         fs.appendFile(
           'src/result/emptyCap.json',
-          JSON.stringify(r.cap[0]),
+          `${JSON.stringify(r.cap[0])},`,
           (err) => {
             if (err) throw err;
           }
