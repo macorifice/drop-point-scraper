@@ -54,17 +54,17 @@ Object.values(cap).map((r) => {
             if (err) throw err;
           }
         );
+      } else {
+        pointCenter.push(_.omit(response.data.data[0], 'logo'));
+
+        fs.appendFile(
+          'src/result/pointCenter.json',
+          JSON.stringify(pointCenter),
+          (err) => {
+            if (err) throw err;
+          }
+        );  
       }
-
-      pointCenter.push(_.omit(response.data.data[0], 'logo'));
-
-      fs.appendFile(
-        'src/result/pointCenter.json',
-        JSON.stringify(pointCenter),
-        (err) => {
-          if (err) throw err;
-        }
-      );
     })
     .catch((error) => {
       fs.appendFile(
