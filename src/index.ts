@@ -5,13 +5,16 @@ import * as fs from 'fs';
 import _ from 'lodash';
 
 interface PointData {
-  address: string;
-  id: string;
-  name: string;
-  position: {
-    lat: number;
-    lng: number;
-  };
+  cap: string;
+  pointCenter: {
+    address: string;
+    id: string;
+    name: string;
+    position: {
+      lat: number;
+      lng: number;
+    };
+  }
 }
 
 const pointCenter: PointData[] = [];
@@ -55,11 +58,16 @@ Object.values(cap).map((r) => {
           }
         );
       } else {
-        pointCenter.push(_.omit(response.data.data[0], 'logo'));
+        let newPoint = _.omit(response.data.data[0], 'logo');
+        pointCenter.push(
+        {
+          cap: r.cap[0],
+          pointCenter: newPoint
+        });
 
         fs.appendFile(
           'src/result/pointCenter.json',
-          JSON.stringify(pointCenter),
+          JSON.stringify(pointCenter, null, 4),
           (err) => {
             if (err) throw err;
           }
