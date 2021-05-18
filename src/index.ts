@@ -65,12 +65,9 @@ Object.values(cap).map((r) => {
           pointCenter: newPoint
         });
 
-        fs.appendFile(
+        fs.writeFileSync(
           'src/result/pointCenter.json',
-          JSON.stringify(pointCenter, null, 4),
-          (err) => {
-            if (err) throw err;
-          }
+          JSON.stringify(pointCenter, null, 4)
         );  
       }
     })
