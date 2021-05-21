@@ -58,11 +58,9 @@ Object.values(cap).map((r) => {
           }
         );
       } else {
-        let newPoint = _.omit(response.data.data[0], 'logo');
-        pointCenter.push(
-        {
-          cap: r.cap[0],
-          pointCenter: newPoint
+        response.data.data.forEach(element => {
+          _.omit(element, 'logo');
+          pointCenter.push({"cap":r.cap[0], "pointCenter": element});
         });
 
         fs.writeFileSync(
