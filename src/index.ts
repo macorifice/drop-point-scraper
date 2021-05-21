@@ -37,17 +37,19 @@ Object.values(cap).map((r) => {
     })
     .then((response: AxiosResponse) => {
 
-      console.log(`Risultati per CAP ${r.cap[0]}`, response.data.data[0] ? response.data.data[0] : '[]');
+      console.log(`Risultati per CAP ${r.cap[0]}`, response.data.data);
 
-      fs.appendFile(
-        'src/result/points.log',
-        `Risultati per CAP ${r.cap[0]} : 
-        ${JSON.stringify(response.data.data[0] ? response.data.data[0] : '[]')}
-        `,
-        (err) => {
-          if (err) throw err;
-        }
-      );
+      response.data.data.forEach(element => {
+        fs.appendFile(
+          'src/result/points.log',
+          `Risultati per CAP ${r.cap[0]} : 
+          ${JSON.stringify(element)}
+          `,
+          (err) => {
+            if (err) throw err;
+          }
+        );
+      });
 
       if (_.isEmpty(response.data.data)) {
         fs.appendFile(
